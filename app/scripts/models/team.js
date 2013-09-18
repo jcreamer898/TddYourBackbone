@@ -15,6 +15,22 @@ FFApp.Models = FFApp.Models || {};
             if (!attrs.name) {
                 return "A team must have a name.";
             }
+        },
+        parse: function(response) {
+            var players = _.clone(response.players);
+
+            delete response.players;
+
+            this.set('players', new FFApp.Collections.PlayersCollection(players));
+
+            return response;
+        },
+        toJSON: function() {
+            var players = this.get('players').toJSON(),
+                json = _.clone(this.attributes);
+
+            json.players = players;
+            return json;
         }
     });
 

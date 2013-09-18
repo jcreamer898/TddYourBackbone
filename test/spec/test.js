@@ -125,6 +125,22 @@
             model.set('team_key', 1);
             expect(model.url()).to.equal('api/teams/1');
         });
+
+        it('should parse the player data and convert it back to json', function(done) {
+            var model = new FFApp.Models.TeamModel({
+                team_key: '1'
+            });
+
+            model.fetch({
+                success: function(model) {
+                    expect(model.get('players')).to.be.an.instanceOf(FFApp.Collections.PlayersCollection);
+                    expect(model.get('players').at(0)).to.be.an.instanceOf(FFApp.Models.PlayerModel);
+
+                    expect(model.toJSON().players).to.be.an('array');
+                    done();
+                }
+            })
+        });
     });
 
     // ### Collections
@@ -280,6 +296,41 @@
             teamView.render({
                 params: ['1']
             });
+        });
+
+        it('should filter players', function() {
+            var team = new FFApp.Models.TeamModel(),
+                teamView = new FFApp.Views.TeamDetailView({
+                    model: team
+                });
+            
+            var reset = function() {
+                team.set('players', new FFApp.Collections.PlayersCollection([{
+                    name: {
+                        'full': 'Tom Brady'
+                    },
+                    'display_position': 'QB'
+                }, {
+                    name: {
+                        'full': 'Peyton Manning',
+                    },
+                    'display_position': 'QB'
+                }, {
+                    name: {
+                        'full': 'Adrian Peterson'
+                    },
+                    'display_position': 'RB'
+                }]));
+            };
+            
+            reset(); 
+            teamView.filter('tom');
+
+            expect(teamView.model.get('players').length).to.equal(1);
+
+            reset();
+            teamView.filter('qb');
+            expect(teamView.model.get('players').length).to.equal(2)
         });
     });
 })();
