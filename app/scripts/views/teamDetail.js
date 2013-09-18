@@ -8,7 +8,8 @@ FFApp.Views = FFApp.Views || {};
     FFApp.Views.TeamDetailView = Backbone.View.extend({
         template: JST['app/scripts/templates/teamDetail.ejs'],
         render: function(options) {
-            if (options.params) {
+            // If params are passed in, set the team_key
+            if (options && options.params) {
                 this.model.set('team_key', options.params[0])
             }
 
@@ -21,6 +22,7 @@ FFApp.Views = FFApp.Views || {};
             this.$el.html(html);
         },
         initialize: function(options) {
+            // Allow for a passed in model or a default model to be set.
             this.model = this.model || new FFApp.Models.TeamModel();
         }
     });

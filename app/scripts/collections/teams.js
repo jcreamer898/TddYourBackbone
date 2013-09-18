@@ -7,7 +7,10 @@ FFApp.Collections = FFApp.Collections || {};
 
     FFApp.Collections.TeamsCollection = Backbone.Collection.extend({
         url: 'api/teams',
-        model: FFApp.Models.TeamModel
+        model: FFApp.Models.TeamModel,
+        comparator: function(team) {
+            return team.get('name');
+        }
     });
 
 })();
