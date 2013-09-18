@@ -1,0 +1,14 @@
+<h1><%= name %></h1>
+
+<table class="table table-striped">
+    <th>Name</th>
+    <th>Position</th>
+    <th>Picture</th>
+<% _.each(players, function(player) { %>
+    <tr>
+        <td><%= player.name.full %></td>
+        <td><%= player.display_position %></td>
+        <td><img src="<%= player.headshot.url %>" alt="<%= player.name.full%>"/></td>
+    </tr>
+<% }); %>
+</table>

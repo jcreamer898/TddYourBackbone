@@ -9,7 +9,7 @@ FFApp.Routers = FFApp.Routers || {};
         routes: {
             '': 'home',
             'teams': 'teams',
-            'teams/:id': 'teams'
+            'teams/:id': 'teamdetail'
         }
     });
 

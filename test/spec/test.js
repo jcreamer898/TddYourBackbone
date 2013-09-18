@@ -1,6 +1,56 @@
 /*global describe, it */
 'use strict';
 (function () {
+    // # Events
+    describe('the app event mediator', function() {
+        it('should have an app event mediator', function () {
+            expect(FFApp.Events).to.exist;
+        });
+
+        it('should respond to triggered events', function() {
+            FFApp.Events.on('foo', function(data) {
+                expect(data.bar).to.be.ok;
+            });
+
+            FFApp.Events.trigger('foo', {
+                bar: true
+            });
+
+            FFApp.Events.off('foo');
+        });
+    }); 
+
+    // # Router
+    describe('the app router', function() {
+        before(function() {
+            this.router = new FFApp.Routers.ApplicationRouter();
+            Backbone.history.start();
+        });
+
+        after(function() {
+            this.router.navigate('/');
+        });
+
+        it('should have a constructor for the app', function() {
+            expect(FFApp.Routers.ApplicationRouter).to.exist;
+        });
+
+        it('should route requests', function() {
+            var called;
+            
+            this.router.route('foo', 'foo');
+
+            this.router.on("route:foo", function(page) {
+                called = true;
+            });
+
+            this.router.navigate('/foo', {
+                trigger: true
+            });
+
+            expect(called).to.exist;
+        });
+    });
 
     // # Views
     // ### HomeView Tests
@@ -67,6 +117,10 @@
                         name: 'foo'
                     }])
                 });
+
+            teamsView.itemTemplate = function () {
+                return '<tr class="teamItem"></tr>';
+            };
             
             teamsView.render();
         });
@@ -79,70 +133,66 @@
                     collection: new FakeCollection()
                 });
 
+            teamsView.itemTemplate = function () {
+                return '<tr class="teamItem"></tr>';
+            };
             teamsView.render();
 
-            teamsView.collection.add({
-                name: 'foo',
-                number_of_moves: 0,
-                number_of_trades: 0,
-                team_logos: [{
-                    team_logo: {
-                        url: 'foo.jpg'
-                    }
-                }]
-            })
-            teamsView.collection.add({
-                name: 'bar',
-                number_of_moves: 0,
-                number_of_trades: 0,
-                team_logos: [{
-                    team_logo: {
-                        url: 'bar.jpg'
-                    }
-                }]
-            });
+            teamsView.collection.add({})
+            teamsView.collection.add({});
 
             expect(teamsView.el.innerHTML).to.not.be.empty;
+            expect($(teamsView.el).find('.teamItem').length).to.equal(2);
+
+            teamsView.render();
             expect($(teamsView.el).find('.teamItem').length).to.equal(2);
         });
     });
 
-    // # Events
-    describe('the app event mediator', function() {
-        it('should have an app event mediator', function () {
-            expect(FFApp.Events).to.exist;
+    describe('the team detail view', function() {
+        it('should have a detail view constructor', function() {
+            expect(FFApp.Views.TeamDetailView).to.exist;
         });
-    }); 
 
-    // # Router
-    // describe('the app router', function() {
-    //     before(function() {
-    //         this.router = new FFApp.Routers.ApplicationRouter();
-    //         Backbone.history.start();
-    //     });
+        it('should try to fetch model data', function(done) {
+            var FakeModel = Backbone.Model.extend({
+                    fetch: function(options) {
+                        this.set('name', 'Holy Hand Grenades');
+                        options.success(this);
+                    }
+                }),
+                teamView = new FFApp.Views.TeamDetailView({
+                model: new FakeModel({
+                    team_key: '314.l.44054.t.4'
+                })
+            });
 
-    //     after(function() {
-    //         this.router.navigate('/');
-    //     });
+            teamView.model.on('change', function(model) {
+                expect(model.get('name')).to.equal('Holy Hand Grenades');
+                done();
+            });
 
-    //     it('should have a constructor for the app', function() {
-    //         expect(FFApp.Routers.ApplicationRouter).to.exist;
-    //     });
+            teamView.render();
+        });
 
-    //     it('should route requests', function() {
-    //         var called;
-            
-    //         this.router.route('foo', 'foo');
+        it('should render the retrieved data', function() {
+            var FakeModel = Backbone.Model.extend({
+                    fetch: function(options) {
+                        options.success(this);
+                    }
+                }),
+                teamView = new FFApp.Views.TeamDetailView({
+                    model: new FakeModel()
+                });
 
-    //         this.router.on("route:foo", function(page) {
-    //             called = true;
-    //         });
+            // decouple test from actual template data
+            teamView.template = function() {
+                return 'fake template data';
+            };
 
-    //         this.router.navigate('/foo', {
-    //             trigger: true
-    //         });
+            teamView.render();
 
-    //         expect(called).to.exist;
-    //     });
-    // });
+            expect(teamView.el.innerHTML).to.equal('fake template data');            
+        });
+    });
 })();

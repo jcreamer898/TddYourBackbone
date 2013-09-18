@@ -6,7 +6,8 @@ FFApp.Models = FFApp.Models || {};
     'use strict';
 
     FFApp.Models.TeamModel = Backbone.Model.extend({
-        url: 'api/team'
+        urlRoot: 'api/teams',
+        idAttribute: 'team_key'
     });
 
 })();

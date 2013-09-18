@@ -8,8 +8,10 @@ FFApp.App = {
             $('[data-view]').append(view.$el.hide());
         }, this);
 
-        router.on('route', function(page) {
-            FFApp.views[page].render();
+        router.on('route', function(page, routeParams) {
+            FFApp.views[page].render({
+                params: routeParams
+            });
             
             if (lastPage) {
                 FFApp.views[lastPage].$el.fadeOut(function() {

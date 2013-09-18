@@ -10,7 +10,13 @@ FFApp.Views = FFApp.Views || {};
         itemTemplate: JST['app/scripts/templates/teamListItem.ejs'],
         render: function() {
             this.$el.html(this.template());
-            this.collection.fetch();
+            
+            if (this.collection.length) {
+                this.collection.each(this.renderItem, this);
+            }
+            else {
+                this.collection.fetch();
+            }
         },
         renderItem: function(model) {
             this.$('table').append(this.itemTemplate(model.toJSON()));
