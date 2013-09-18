@@ -6,8 +6,8 @@
     <link rel="stylesheet" href="lib/mocha/mocha.css">
 </head>
 <body>
-    <div id="mocha"></div>
     <script src="lib/mocha/mocha.js"></script>
+    <script src='bower_components/blanket/dist/qunit/blanket.js' data-cover-adapter="lib/mocha-blanket.js"></script>
     <script>mocha.setup('bdd')</script>
     <!-- assertion framework -->
     <script src="lib/chai.js"></script>
@@ -20,13 +20,15 @@
     <script src="bower_components/underscore/underscore.js"></script>
     <script src="bower_components/backbone/backbone.js"></script>
     <script src="scripts/templates.js"></script>
-    <script src="scripts/main.js"></script>
-    <script src="scripts/views/home.js"></script>
-    <script src="scripts/views/teams.js"></script>
-    <script src="scripts/views/teamDetail.js"></script>
-    <script src="scripts/models/team.js"></script>
-    <script src="scripts/collections/teams.js"></script>
-    <script src="scripts/routes/application.js"></script>
+    <script data-cover src="scripts/main.js"></script>
+    <script data-cover src="scripts/views/home.js"></script>
+    <script data-cover src="scripts/views/teams.js"></script>
+    <script data-cover src="scripts/views/teamDetail.js"></script>
+    <script data-cover src="scripts/models/team.js"></script>
+    <script data-cover src="scripts/collections/teams.js"></script>
+    <script data-cover src="scripts/routes/application.js"></script>
+
+    <div id="mocha"></div>
 
     <!-- include spec files here... -->
     <script src="spec/test.js"></script>
