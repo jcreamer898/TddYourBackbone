@@ -1,44 +1,6 @@
 /*global describe, it */
 'use strict';
 (function () {
-    // # Events
-    describe('the app event mediator', function() {
-        it('should have an app event mediator', function () {
-            expect(FFApp.Events).to.exist;
-        });
-    }); 
-
-    // # Router
-    describe('the app router', function() {
-        before(function() {
-            this.router = new FFApp.Routers.ApplicationRouter();
-            Backbone.history.start();
-        });
-
-        after(function() {
-            this.router.navigate('/');
-        });
-
-        it('should have a constructor for the app', function() {
-            expect(FFApp.Routers.ApplicationRouter).to.exist;
-        });
-
-        it('should route requests', function() {
-            var called;
-            
-            this.router.route('foo', 'foo');
-
-            this.router.on("route:foo", function(page) {
-                called = true;
-            });
-
-            this.router.navigate('/foo', {
-                trigger: true
-            });
-
-            expect(called).to.exist;
-        });
-    });
 
     // # Views
     // ### HomeView Tests
@@ -128,10 +90,59 @@
                         url: 'foo.jpg'
                     }
                 }]
+            })
+            teamsView.collection.add({
+                name: 'bar',
+                number_of_moves: 0,
+                number_of_trades: 0,
+                team_logos: [{
+                    team_logo: {
+                        url: 'bar.jpg'
+                    }
+                }]
             });
 
             expect(teamsView.el.innerHTML).to.not.be.empty;
-            expect($(teamsView.el).find('.teamItem').length).to.equal(1);
+            expect($(teamsView.el).find('.teamItem').length).to.equal(2);
         });
     });
+
+    // # Events
+    describe('the app event mediator', function() {
+        it('should have an app event mediator', function () {
+            expect(FFApp.Events).to.exist;
+        });
+    }); 
+
+    // # Router
+    // describe('the app router', function() {
+    //     before(function() {
+    //         this.router = new FFApp.Routers.ApplicationRouter();
+    //         Backbone.history.start();
+    //     });
+
+    //     after(function() {
+    //         this.router.navigate('/');
+    //     });
+
+    //     it('should have a constructor for the app', function() {
+    //         expect(FFApp.Routers.ApplicationRouter).to.exist;
+    //     });
+
+    //     it('should route requests', function() {
+    //         var called;
+            
+    //         this.router.route('foo', 'foo');
+
+    //         this.router.on("route:foo", function(page) {
+    //             called = true;
+    //         });
+
+    //         this.router.navigate('/foo', {
+    //             trigger: true
+    //         });
+
+    //         expect(called).to.exist;
+    //     });
+    // });
 })();

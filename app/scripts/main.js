@@ -1,8 +1,5 @@
-/*global FFApp, $*/
-
-
 window.FFApp = {
-    _views: {},
+    views: {},
     Events: _.extend({}, Backbone.Events),
     Models: {},
     Collections: {},

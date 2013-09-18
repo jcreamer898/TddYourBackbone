@@ -114,8 +114,7 @@ module.exports = function (grunt) {
             all: [
                 'Gruntfile.js',
                 '<%= yeoman.app %>/scripts/{,*/}*.js',
-                '!<%= yeoman.app %>/scripts/vendor/*',
-                'test/spec/{,*/}*.js'
+                '!<%= yeoman.app %>/scripts/vendor/*'
             ]
         },
         mocha: {
@@ -256,6 +255,7 @@ module.exports = function (grunt) {
             dist: {
                 files: {
                     src: [
+                        '<%= yeoman.dist %>/fixtures/{,*/}*.json',
                         '<%= yeoman.dist %>/scripts/{,*/}*.js',
                         '<%= yeoman.dist %>/styles/{,*/}*.css',
                         '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp}',
